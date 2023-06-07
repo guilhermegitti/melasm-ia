@@ -9,15 +9,15 @@ customtkinter.set_appearance_mode("Dark")  # Modes: system (default), light, dar
 customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 app = customtkinter.CTk()  #creating cutstom tkinter window
-app.geometry("1920x1080")
+app.geometry("1920x1080+0+0")
 app.title('Login')
 
 class Inicial(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("image_example.py")
-        self.geometry("1920x1080")
+        self.title("MelasmIA")
+        self.geometry("1920x1080+0+0")
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -171,9 +171,9 @@ class Inicial(customtkinter.CTk):
             # Verifica se um arquivo foi selecionado
             if file_path:
                 print("Arquivo selecionado:", file_path)
-                self.img = customtkinter.CTkImage(Image.open(file_path))
-                self.img_1 = customtkinter.CTkLabel(self.img, text="  MelasmIA", image=self.img)
-                self.img_1.grid(row=0, column=0, padx=20, pady=20)
+                self.img = customtkinter.CTkImage(Image.open(file_path), size=(100,100))
+                self.img_1 = customtkinter.CTkLabel(self.third_frame, text="", image=self.img)
+                self.img_1.place(x=800, y=300)
 
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.third_frame.grid_columnconfigure(0, weight=1)
