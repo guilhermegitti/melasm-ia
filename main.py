@@ -2,23 +2,22 @@
 import tkinter
 import customtkinter
 from PIL import ImageTk,Image
-import time
+from tkinter import filedialog
 import os
 
 customtkinter.set_appearance_mode("Dark")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 app = customtkinter.CTk()  #creating cutstom tkinter window
-app.geometry("600x440")
+app.geometry("1920x1080")
 app.title('Login')
-
 
 class Inicial(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
         self.title("image_example.py")
-        self.geometry("700x450")
+        self.geometry("1920x1080")
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -35,6 +34,9 @@ class Inicial(customtkinter.CTk):
                                                  dark_image=Image.open(os.path.join(image_path, "chat_light.png")), size=(20, 20))
         self.add_user_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
+        self.resultImg = customtkinter.CTkImage(Image.open(os.path.join(image_path, "melas.jpg")), size=(300, 300))
+        self.produto = customtkinter.CTkImage(Image.open(os.path.join(image_path, "produto.png")), size=(150, 150))
+
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -65,30 +67,131 @@ class Inicial(customtkinter.CTk):
         self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=20, sticky="s")
 
         # create home frame
+        # Home Frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
 
-        self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="My Results")
+        #Def font 
+        my_font_text = customtkinter.CTkFont(family="Arial", size=12)
+        my_font_title = customtkinter.CTkFont(family="Arial", size=32)
+
+        self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="Bem vindo ao MelasmIA.", font = my_font_title)
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="", image=self.image_icon_image)
-        self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="right")
-        self.home_frame_button_2.grid(row=2, column=0, padx=20, pady=10)
-        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="top")
-        self.home_frame_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.home_frame_button_4 = customtkinter.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="bottom", anchor="w")
-        self.home_frame_button_4.grid(row=4, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label_text = customtkinter.CTkLabel(self.home_frame, text="Utilizamos de uma IA treinada para te ajudar com o tratamento de um Melasma.", font = my_font_text)
+        self.home_frame_large_image_label_text.grid(row=2, column=0, padx=20, pady=10)
+
+
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Faça já uma detecção", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=lambda: self.select_frame_by_name("frame_3"))
+        self.home_frame_button_2.grid(row=3, column=0, padx=20, pady=10)
+
+        self.home_frame_large_image_label_text2 = customtkinter.CTkLabel(self.home_frame, text="Caso já tenha feito sua primeira detecção, veja clicando no botão abaixo.", font = my_font_text)
+        self.home_frame_large_image_label_text2.grid(row=4, column=0, padx=20, pady=10)
+
+        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="Vejá seus resultados", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=lambda: self.select_frame_by_name("frame_2"))
+        self.home_frame_button_3.grid(row=5, column=0, padx=20, pady=10)
 
         # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.second_frame.grid_columnconfigure(0, weight=1)
+        self.second_label = customtkinter.CTkLabel(self.second_frame, text="Meu Resultados", font=("Arial",32))
+        self.second_label.grid(row=0, column=0, padx=20, pady=10)
+        self.second_large_image_label = customtkinter.CTkLabel(self.second_frame,text="", image=self.resultImg)
+        self.second_large_image_label.grid(row=1, column=0, padx=20, pady=10)
+        self.second_label_Re = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento", font=("Arial",32))
+        self.second_label_Re.grid(row=2, column=0, padx=20, pady=10)
+        self.second_image_label1 = customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label1.place(x=150, y=500)
+        self.second_label_description = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description.place(x=330, y=500)
+        self.second_frame_button_1 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_1.place(x=330, y=600)
+        self.second_image_label2 = customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label2.place(x=650, y=500)
+        self.second_label_description2 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description2.place(x=830, y=500)
+        self.second_frame_button_2 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_2.place(x=830, y=600)
+        self.second_image_label3= customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label3.place(x=1150, y=500)
+        self.second_label_description3 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description3.place(x=1330, y=500)
+        self.second_frame_button_3 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_3.place(x=1330, y=600)
+
+        self.second_image_label4 = customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label4.place(x=150, y=750)
+        self.second_label_description4 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description4.place(x=330, y=750)
+        self.second_frame_button_4 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_4.place(x=330, y=850)
+        self.second_image_label5 = customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label5.place(x=650, y=750)
+        self.second_label_description5 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description5.place(x=830, y=750)
+        self.second_frame_button_5 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_5.place(x=830, y=850)
+        self.second_image_label6= customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label6.place(x=1150, y=750)
+        self.second_label_description6 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description6.place(x=1330, y=750)
+        self.second_frame_button_6 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_3.place(x=1330, y=600)
+
+        self.second_image_label4 = customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label4.place(x=150, y=750)
+        self.second_label_description4 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description4.place(x=330, y=750)
+        self.second_frame_button_4 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_4.place(x=330, y=850)
+        self.second_image_label5 = customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label5.place(x=650, y=750)
+        self.second_label_description5 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description5.place(x=830, y=750)
+        self.second_frame_button_5 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_5.place(x=830, y=850)
+        self.second_image_label6= customtkinter.CTkLabel(self.second_frame, text="", image=self.produto)
+        self.second_image_label6.place(x=1150, y=750)
+        self.second_label_description6 = customtkinter.CTkLabel(self.second_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.second_label_description6.place(x=1330, y=750)
+        self.second_frame_button_6 = customtkinter.CTkButton(self.second_frame, text="Clique Aqui!", width=280)
+        self.second_frame_button_6.place(x=1330, y=850)
 
         # create third frame
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        
+        def upload_foto():
+            # Abre o gerenciador de arquivos para selecionar uma imagem
+            file_path = filedialog.askopenfilename(
+                filetypes=[("Imagens PNG", "*.png")],
+                title="Selecione uma imagem",
+                initialdir="/",
+            )
 
+            # Verifica se um arquivo foi selecionado
+            if file_path:
+                print("Arquivo selecionado:", file_path)
+                self.img = customtkinter.CTkImage(Image.open(file_path))
+                self.img_1 = customtkinter.CTkLabel(self.img, text="  MelasmIA", image=self.img)
+                self.img_1.grid(row=0, column=0, padx=20, pady=20)
+
+        self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.third_frame.grid_columnconfigure(0, weight=1)
+        
+        self.third_frame_1 = customtkinter.CTkLabel(self.third_frame, text="Seja bem vindo a aba de Detecções! \n Para começar uma nova detecção escolha a forma que deseja subir uma imagem: ", font = my_font_title)
+        self.third_frame_1.place(x=300, y=30)
+        
+        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Upload do Computador", width=200, height=70, font = my_font_text)
+        self.third_frame_1.configure(command=upload_foto)
+        self.third_frame_1.place(x=600, y=120)
+        
+        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Abrir Camera", width=200, height=70, font = my_font_text)
+        self.third_frame_1.place(x=900, y=120)
+        
         # select default frame
         self.select_frame_by_name("home")
-
+        
+    
     def select_frame_by_name(self, name):
         # set button color for selected button
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
@@ -152,8 +255,8 @@ button1 = customtkinter.CTkButton(master=frame, width=220, text="Login", command
 button1.place(x=50, y=240)
 
 
-img2=customtkinter.CTkImage(Image.open("Google__G__Logo.svg.webp").resize((20,20), Image.ANTIALIAS))
-img3=customtkinter.CTkImage(Image.open("124010.png").resize((20,20), Image.ANTIALIAS))
+img2=customtkinter.CTkImage(Image.open("google_logo.webp").resize((20,20), Image.ANTIALIAS))
+img3=customtkinter.CTkImage(Image.open("facebook_logo.png").resize((20,20), Image.ANTIALIAS))
 button2= customtkinter.CTkButton(master=frame, image=img2, text="VitaDerm", width=100, height=20, compound="left", fg_color='white', text_color='black', hover_color='#AFAFAF')
 button2.place(x=50, y=290)
 
