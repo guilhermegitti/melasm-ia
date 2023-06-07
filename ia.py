@@ -2,11 +2,14 @@ import cv2
 import numpy as np
 from roboflow import Roboflow
 
+def test_function():
+    print("Teste")
+
 # Replace <IP_ADDRESS> and <PORT> with the IP address and port number shown in the IP Webcam app
 url = "http://10.70.152.19:8080/video"
 
 # Inicia a captura de vídeo a partir da câmera do celular
-cap = cv2.VideoCapture(url)
+cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
     print("Não foi possível abrir a câmera.")

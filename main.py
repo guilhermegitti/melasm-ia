@@ -1,7 +1,9 @@
 #importing required modules
 import tkinter
+import cv2
 import customtkinter
 from PIL import ImageTk,Image
+from functions import new_detection
 import time
 import os
 
@@ -9,7 +11,7 @@ customtkinter.set_appearance_mode("Dark")  # Modes: system (default), light, dar
 customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 app = customtkinter.CTk()  #creating cutstom tkinter window
-app.geometry("600x440")
+app.geometry("1920x1080+0+0")
 app.title('Login')
 
 
@@ -18,7 +20,7 @@ class Inicial(customtkinter.CTk):
         super().__init__()
 
         self.title("image_example.py")
-        self.geometry("700x450")
+        self.geometry("1920x1080+0+0")
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -50,11 +52,13 @@ class Inicial(customtkinter.CTk):
                                                    image=self.home_image, anchor="w", command=self.home_button_event)
         self.home_button.grid(row=1, column=0, sticky="ew")
 
+        #My Results
         self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="My Results",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.chat_image, anchor="w", command=self.frame_2_button_event)
         self.frame_2_button.grid(row=2, column=0, sticky="ew")
 
+        #New Detection
         self.frame_3_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="New Detection",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_user_image, anchor="w", command=self.frame_3_button_event)
@@ -64,21 +68,33 @@ class Inicial(customtkinter.CTk):
                                                                 command=self.change_appearance_mode_event)
         self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=20, sticky="s")
 
-        # create home frame
+        #Home Frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
 
-        self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="My Results")
+        #Def font 
+        my_font_text = customtkinter.CTkFont(family="Arial", size=12)
+        my_font_title = customtkinter.CTkFont(family="Arial", size=32)
+
+
+        self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="Bem vindo ao MelasmIA.", font = my_font_title)
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
 
-        self.home_frame_button_1 = customtkinter.CTkButton(self.home_frame, text="", image=self.image_icon_image)
-        self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="right")
-        self.home_frame_button_2.grid(row=2, column=0, padx=20, pady=10)
-        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="top")
-        self.home_frame_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.home_frame_button_4 = customtkinter.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="bottom", anchor="w")
-        self.home_frame_button_4.grid(row=4, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label_text = customtkinter.CTkLabel(self.home_frame, text="Utilizamos de uma IA treinada para te ajudar com o tratamento de um Melasma.", font = my_font_text)
+        self.home_frame_large_image_label_text.grid(row=2, column=0, padx=20, pady=10)
+
+
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Faça já uma detecção", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=new_detection)
+        self.home_frame_button_2.grid(row=3, column=0, padx=20, pady=10)
+
+        #self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Faça já uma detecção", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=lambda: self.select_frame_by_name("frame_3"))
+        #self.home_frame_button_2.grid(row=3, column=0, padx=20, pady=10)
+
+        self.home_frame_large_image_label_text2 = customtkinter.CTkLabel(self.home_frame, text="Caso já tenha feito sua primeira detecção, veja clicando no botão abaixo.", font = my_font_text)
+        self.home_frame_large_image_label_text2.grid(row=4, column=0, padx=20, pady=10)
+
+        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="Vejá seus resultados", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=lambda: self.select_frame_by_name("frame_2"))
+        self.home_frame_button_3.grid(row=5, column=0, padx=20, pady=10)
 
         # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -152,8 +168,8 @@ button1 = customtkinter.CTkButton(master=frame, width=220, text="Login", command
 button1.place(x=50, y=240)
 
 
-img2=customtkinter.CTkImage(Image.open("Google__G__Logo.svg.webp").resize((20,20), Image.ANTIALIAS))
-img3=customtkinter.CTkImage(Image.open("124010.png").resize((20,20), Image.ANTIALIAS))
+img2=customtkinter.CTkImage(Image.open("google_logo.webp").resize((20,20), Image.ANTIALIAS))
+img3=customtkinter.CTkImage(Image.open("facebook_logo.png").resize((20,20), Image.ANTIALIAS))
 button2= customtkinter.CTkButton(master=frame, image=img2, text="VitaDerm", width=100, height=20, compound="left", fg_color='white', text_color='black', hover_color='#AFAFAF')
 button2.place(x=50, y=290)
 
