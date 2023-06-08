@@ -12,6 +12,21 @@ app = customtkinter.CTk()  #creating cutstom tkinter window
 app.geometry("1920x1080+0+0")
 app.title('Login')
 
+class ToplevelWindow(customtkinter.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.title("")
+        self.geometry("450x400+800+300")
+        self.resizable(0,0)
+        self.state('withdrawn')
+        self.label = customtkinter.CTkLabel(self, text="Posicione a câmera como no exemplo abaixo", font=("Arial",20))
+        self.label.place(x=30, y=20)
+        self.face_image = customtkinter.CTkImage(Image.open("test_images/face.png"), size=(200, 270))
+        self.label_img = customtkinter.CTkLabel(self, text="", image=self.face_image)
+        self.label_img.place(x=120, y=70)
+        self.button_1 = customtkinter.CTkButton(self, text="Capturar imagem", width=280)
+        self.button_1.place(x=80, y=360)
+
 class Inicial(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -175,6 +190,7 @@ class Inicial(customtkinter.CTk):
                 self.img_1 = customtkinter.CTkLabel(self.third_frame, text="", image=self.img)
                 self.img_1.place(x=800, y=300)
 
+        
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.third_frame.grid_columnconfigure(0, weight=1)
         
@@ -185,13 +201,21 @@ class Inicial(customtkinter.CTk):
         self.third_frame_1.configure(command=upload_foto)
         self.third_frame_1.place(x=600, y=120)
         
-        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Abrir Camera", width=200, height=70, font = my_font_text)
+        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Abrir Camera", width=200, height=70, font = my_font_text, command=self.open_toplevel)
         self.third_frame_1.place(x=900, y=120)
-        
+        self.toplevel_window = None
+
         # select default frame
         self.select_frame_by_name("home")
         
     
+
+    def open_toplevel(self):
+            if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+                self.toplevel_window = ToplevelWindow(self) # create window if its None or destroyed
+                self.toplevel_window.focus()  
+            else:
+                self.toplevel_window.focus()  # if window exists focus it
     def select_frame_by_name(self, name):
         # set button color for selected button
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")

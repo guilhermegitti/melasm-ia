@@ -3,7 +3,7 @@ import numpy as np
 from roboflow import Roboflow
 
 # Replace <IP_ADDRESS> and <PORT> with the IP address and port number shown in the IP Webcam app
-url = "http://10.70.152.19:8080/video"
+url = "http://192.168.0.14:8080/video"
 
 # Inicia a captura de vídeo a partir da câmera do celular
 cap = cv2.VideoCapture(url)
