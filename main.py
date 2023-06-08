@@ -11,6 +11,7 @@ customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-b
 
 app = customtkinter.CTk()  #creating cutstom tkinter window
 app.geometry("1920x1080+0+0")
+# app.attributes('-fullscreen', True)
 app.title('Login')
 
 
@@ -20,7 +21,7 @@ class Inicial(customtkinter.CTk):
 
         self.title("MelasmIA")
         self.geometry("1920x1080+0+0")
-
+        # self.attributes('-fullscreen', True)
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -36,7 +37,7 @@ class Inicial(customtkinter.CTk):
                                                  dark_image=Image.open(os.path.join(image_path, "chat_light.png")), size=(20, 20))
         self.add_user_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
-        self.resultImg = customtkinter.CTkImage(Image.open("test_images/prediction.jpg"), size=(300, 300))
+        self.resultImg = customtkinter.CTkImage(Image.open("test_images/melas.jpg"), size=(300, 300))
         self.produto = customtkinter.CTkImage(Image.open(os.path.join(image_path, "produto.png")), size=(150, 150))
 
 
@@ -56,15 +57,15 @@ class Inicial(customtkinter.CTk):
 
         self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="My Results",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      image=self.chat_image, anchor="w", command=self.frame_2_button_event)
+                                                      image=self.chat_image, anchor="w", command=lambda: self.frame_2_button_event("frame_2"))
         self.frame_2_button.grid(row=3, column=0, sticky="ew")
 
         self.frame_3_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="New Detection",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      image=self.add_user_image, anchor="w", command=self.frame_3_button_event)
+                                                      image=self.add_user_image, anchor="w", command= self.frame_3_button_event)
         self.frame_3_button.grid(row=2, column=0, sticky="ew")
 
-        self.appearance_mode_menu = customtkinter.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
+        self.appearance_mode_menu = customtkinter.CTkOptionMenu(self.navigation_frame, values=["Dark", "Light", "System"],
                                                                 command=self.change_appearance_mode_event)
         self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=20, sticky="s")
 
@@ -173,7 +174,8 @@ class Inicial(customtkinter.CTk):
         
         self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Abrir Camera", width=200, height=70, font = my_font_text, command=lambda: self.select_frame_by_name('frame_4'))
         self.third_frame_1.place(x=900, y=120)
-        # self.toplevel_window = None
+        
+
 
         # create fourth frame
         self.fourth_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -185,6 +187,73 @@ class Inicial(customtkinter.CTk):
         self.label_img.grid(row=2, column=0, padx=20, pady=10)
         self.button_1 = customtkinter.CTkButton(self.fourth_frame, text="Capturar imagem", width=280, command=self.capturarImagem)
         self.button_1.grid(row=3, column=0, padx=20, pady=10)
+
+
+        # create fifth frame
+        self.fifth_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.fifth_frame.grid_columnconfigure(0, weight=1)
+        self.fifth_label = customtkinter.CTkLabel(self.fifth_frame, text="Meu Resultados", font=("Arial",32))
+        self.fifth_label.grid(row=0, column=0, padx=20, pady=10)
+        self.fifth_large_image_label = customtkinter.CTkLabel(self.fifth_frame,text="", image=self.resultImg)
+        self.fifth_large_image_label.grid(row=1, column=0, padx=20, pady=10)
+        self.fifth_label_Re = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações", font=("Arial",32))
+        self.fifth_label_Re.grid(row=2, column=0, padx=20, pady=10)
+        self.fifth_image_label1 = customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label1.place(x=150, y=500)
+        self.fifth_label_description = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description.place(x=330, y=500)
+        self.fifth_frame_button_1 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_1.place(x=330, y=600)
+        self.fifth_image_label2 = customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label2.place(x=650, y=500)
+        self.fifth_label_description2 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description2.place(x=830, y=500)
+        self.fifth_frame_button_2 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_2.place(x=830, y=600)
+        self.fifth_image_label3= customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label3.place(x=1150, y=500)
+        self.fifth_label_description3 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description3.place(x=1330, y=500)
+        self.fifth_frame_button_3 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_3.place(x=1330, y=600)
+
+        self.fifth_image_label4 = customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label4.place(x=150, y=750)
+        self.fifth_label_description4 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description4.place(x=330, y=750)
+        self.fifth_frame_button_4 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_4.place(x=330, y=850)
+        self.fifth_image_label5 = customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label5.place(x=650, y=750)
+        self.fifth_label_description5 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description5.place(x=830, y=750)
+        self.fifth_frame_button_5 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_5.place(x=830, y=850)
+        self.fifth_image_label6= customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label6.place(x=1150, y=750)
+        self.fifth_label_description6 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description6.place(x=1330, y=750)
+        self.fifth_frame_button_6 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_3.place(x=1330, y=600)
+
+        self.fifth_image_label4 = customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label4.place(x=150, y=750)
+        self.fifth_label_description4 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description4.place(x=330, y=750)
+        self.fifth_frame_button_4 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_4.place(x=330, y=850)
+        self.fifth_image_label5 = customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label5.place(x=650, y=750)
+        self.fifth_label_description5 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description5.place(x=830, y=750)
+        self.fifth_frame_button_5 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_5.place(x=830, y=850)
+        self.fifth_image_label6= customtkinter.CTkLabel(self.fifth_frame, text="", image=self.produto)
+        self.fifth_image_label6.place(x=1150, y=750)
+        self.fifth_label_description6 = customtkinter.CTkLabel(self.fifth_frame, text="Recomendações de Tratamento dhududs \n" *5, font=("Arial",15))
+        self.fifth_label_description6.place(x=1330, y=750)
+        self.fifth_frame_button_6 = customtkinter.CTkButton(self.fifth_frame, text="Clique Aqui!", width=280)
+        self.fifth_frame_button_6.place(x=1330, y=850)
 
         # select default frame
         self.select_frame_by_name("home")
@@ -208,13 +277,28 @@ class Inicial(customtkinter.CTk):
 
     def analizar(self, path):
         self.config(cursor="watch")
-        ia.indentificarMelasma(path)
+        predictions = ia.indentificarMelasma(path)
         self.config(cursor="")
-        self.second_large_image_label.destroy()
-        self.resultImg = customtkinter.CTkImage(Image.open("prediction.jpg"), size=(300, 300))
-        self.second_large_image_label = customtkinter.CTkLabel(self.second_frame,text="", image=self.resultImg)
-        self.second_large_image_label.grid(row=1, column=0, padx=20, pady=10)
-        self.select_frame_by_name("frame_2")
+        if not predictions:
+            self.fifth_large_image_label.destroy()
+            self.resultImg = customtkinter.CTkImage(Image.open("prediction.jpg"), size=(300, 300))
+            self.fifth_large_image_label = customtkinter.CTkLabel(self.fifth_frame,text="", image=self.resultImg)
+            self.fifth_large_image_label.grid(row=1, column=0, padx=20, pady=10)
+            self.select_frame_by_name("frame_5")
+            self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="My Results",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      image=self.chat_image, anchor="w", command=lambda: self.frame_2_button_event("frame_5"))
+            self.frame_2_button.grid(row=3, column=0, sticky="ew")
+        else:
+            self.second_large_image_label.destroy()
+            self.resultImg = customtkinter.CTkImage(Image.open("prediction.jpg"), size=(300, 300))
+            self.second_large_image_label = customtkinter.CTkLabel(self.second_frame,text="", image=self.resultImg)
+            self.second_large_image_label.grid(row=1, column=0, padx=20, pady=10)
+            self.select_frame_by_name("frame_2")
+            self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="My Results",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      image=self.chat_image, anchor="w", command=lambda: self.frame_2_button_event("frame_2"))
+            self.frame_2_button.grid(row=3, column=0, sticky="ew")
 
     def capturarImagem(self):
         ia.abrirCamera()
@@ -222,7 +306,7 @@ class Inicial(customtkinter.CTk):
         self.img = customtkinter.CTkImage(Image.open("recorte.jpg"), size=(300,400))
         self.img_1 = customtkinter.CTkLabel(self.third_frame, text="", image=self.img)
         self.img_1.place(x=700, y=300)
-        self.button = customtkinter.CTkButton(self.third_frame,text="Analizar Imagem", width=200, height=70, font = ("Arial",12), command=self.analizar)
+        self.button = customtkinter.CTkButton(self.third_frame,text="Analizar Imagem", width=200, height=70, font = ("Arial",12), command=lambda: self.analizar("recorte.jpg"))
         self.button.place(x=750, y=750)
 
     def select_frame_by_name(self, name):
@@ -248,12 +332,17 @@ class Inicial(customtkinter.CTk):
             self.fourth_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.fourth_frame.grid_forget() 
+        if name == "frame_5":
+            self.fifth_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.fifth_frame.grid_forget() 
+
 
     def home_button_event(self):
         self.select_frame_by_name("home")
 
-    def frame_2_button_event(self):
-        self.select_frame_by_name("frame_2")
+    def frame_2_button_event(self, version):
+        self.select_frame_by_name(version)
 
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")

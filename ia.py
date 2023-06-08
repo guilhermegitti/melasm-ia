@@ -54,21 +54,21 @@ def abrirCamera():
 def indentificarMelasma(path):
     if path:
         img = path
-    else:
-        img = "recorte.png"
         
     rf = Roboflow(api_key="cJKIb3GNxOiAlmcdZzJv")
     project = rf.workspace().project("melasma_detection")
     model = project.version(1).model
 
     # visualize your prediction
-    model.predict(img, confidence=40, overlap=30).save("prediction.jpg")
+    model.predict(img, confidence=50, overlap=30).save("prediction.jpg")
 
     # infer on a local image
-    predictions = model.predict(img, confidence=40, overlap=30).json()
-    predictions = predictions['predictions'][0]['confidence']
-    print("Gerando o resultado da nossa inteligência artificial...")
-    print(""+str(round(predictions * 100,1))+'%')
+    predictions = model.predict(img, confidence=50, overlap=30).json()
+    return predictions['predictions']
+    # if predictions:
+    #     predictions = predictions['predictions'][0]['confidence']
+    #     print("Gerando o resultado da nossa inteligência artificial...")
+    #     print(""+str(round(predictions * 100,1))+'%')
 
 
 
