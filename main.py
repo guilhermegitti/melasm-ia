@@ -2,8 +2,9 @@
 import tkinter
 import customtkinter
 from PIL import ImageTk,Image
-from tkinter import filedialog
+from tkinter import NW, filedialog
 import os
+import ia
 
 customtkinter.set_appearance_mode("Dark")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
@@ -12,20 +13,6 @@ app = customtkinter.CTk()  #creating cutstom tkinter window
 app.geometry("1920x1080+0+0")
 app.title('Login')
 
-class ToplevelWindow(customtkinter.CTkToplevel):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.title("")
-        self.geometry("450x400+800+300")
-        self.resizable(0,0)
-        self.state('withdrawn')
-        self.label = customtkinter.CTkLabel(self, text="Posicione a câmera como no exemplo abaixo", font=("Arial",20))
-        self.label.place(x=30, y=20)
-        self.face_image = customtkinter.CTkImage(Image.open("test_images/face.png"), size=(200, 270))
-        self.label_img = customtkinter.CTkLabel(self, text="", image=self.face_image)
-        self.label_img.place(x=120, y=70)
-        self.button_1 = customtkinter.CTkButton(self, text="Capturar imagem", width=280)
-        self.button_1.place(x=80, y=360)
 
 class Inicial(customtkinter.CTk):
     def __init__(self):
@@ -49,7 +36,7 @@ class Inicial(customtkinter.CTk):
                                                  dark_image=Image.open(os.path.join(image_path, "chat_light.png")), size=(20, 20))
         self.add_user_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
-        self.resultImg = customtkinter.CTkImage(Image.open(os.path.join(image_path, "melas.jpg")), size=(300, 300))
+        self.resultImg = customtkinter.CTkImage(Image.open("test_images/prediction.jpg"), size=(300, 300))
         self.produto = customtkinter.CTkImage(Image.open(os.path.join(image_path, "produto.png")), size=(150, 150))
 
 
@@ -70,12 +57,12 @@ class Inicial(customtkinter.CTk):
         self.frame_2_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="My Results",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.chat_image, anchor="w", command=self.frame_2_button_event)
-        self.frame_2_button.grid(row=2, column=0, sticky="ew")
+        self.frame_2_button.grid(row=3, column=0, sticky="ew")
 
         self.frame_3_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="New Detection",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_user_image, anchor="w", command=self.frame_3_button_event)
-        self.frame_3_button.grid(row=3, column=0, sticky="ew")
+        self.frame_3_button.grid(row=2, column=0, sticky="ew")
 
         self.appearance_mode_menu = customtkinter.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
                                                                 command=self.change_appearance_mode_event)
@@ -173,9 +160,36 @@ class Inicial(customtkinter.CTk):
         self.second_frame_button_6.place(x=1330, y=850)
 
         # create third frame
+        self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")        
         self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.third_frame.grid_columnconfigure(0, weight=1)
         
-        def upload_foto():
+        self.third_frame_1 = customtkinter.CTkLabel(self.third_frame, text="Seja bem vindo a aba de Detecções! \n Para começar uma nova detecção escolha a forma que deseja subir uma imagem: ", font = my_font_title)
+        self.third_frame_1.place(x=300, y=30)
+        
+        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Upload do Computador", width=200, height=70, font = my_font_text)
+        self.third_frame_1.configure(command=self.upload_foto)
+        self.third_frame_1.place(x=600, y=120)
+        
+        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Abrir Camera", width=200, height=70, font = my_font_text, command=lambda: self.select_frame_by_name('frame_4'))
+        self.third_frame_1.place(x=900, y=120)
+        # self.toplevel_window = None
+
+        # create fourth frame
+        self.fourth_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.fourth_frame.grid_columnconfigure(0, weight=1)
+        self.label = customtkinter.CTkLabel(self.fourth_frame, text="Posicione a câmera como no exemplo abaixo", font=("Arial",20))
+        self.label.grid(row=1, column=0, padx=20, pady=10)
+        self.face_image = customtkinter.CTkImage(Image.open("test_images/face.png"), size=(200, 270))
+        self.label_img = customtkinter.CTkLabel(self.fourth_frame, text="", image=self.face_image)
+        self.label_img.grid(row=2, column=0, padx=20, pady=10)
+        self.button_1 = customtkinter.CTkButton(self.fourth_frame, text="Capturar imagem", width=280, command=self.capturarImagem)
+        self.button_1.grid(row=3, column=0, padx=20, pady=10)
+
+        # select default frame
+        self.select_frame_by_name("home")
+
+    def upload_foto(self):
             # Abre o gerenciador de arquivos para selecionar uma imagem
             file_path = filedialog.askopenfilename(
                 filetypes=[("Imagens PNG", "*.png")],
@@ -186,36 +200,31 @@ class Inicial(customtkinter.CTk):
             # Verifica se um arquivo foi selecionado
             if file_path:
                 print("Arquivo selecionado:", file_path)
-                self.img = customtkinter.CTkImage(Image.open(file_path), size=(100,100))
+                self.img = customtkinter.CTkImage(Image.open(file_path), size=(300,400))
                 self.img_1 = customtkinter.CTkLabel(self.third_frame, text="", image=self.img)
-                self.img_1.place(x=800, y=300)
+                self.img_1.place(x=700, y=300)
+                self.button = customtkinter.CTkButton(self.third_frame,text="Analizar Imagem", width=200, height=70, font = ("Arial",12), command=lambda: self.analizar(file_path))
+                self.button.place(x=750, y=750)
 
-        
-        self.third_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        self.third_frame.grid_columnconfigure(0, weight=1)
-        
-        self.third_frame_1 = customtkinter.CTkLabel(self.third_frame, text="Seja bem vindo a aba de Detecções! \n Para começar uma nova detecção escolha a forma que deseja subir uma imagem: ", font = my_font_title)
-        self.third_frame_1.place(x=300, y=30)
-        
-        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Upload do Computador", width=200, height=70, font = my_font_text)
-        self.third_frame_1.configure(command=upload_foto)
-        self.third_frame_1.place(x=600, y=120)
-        
-        self.third_frame_1 = customtkinter.CTkButton(self.third_frame, text="Abrir Camera", width=200, height=70, font = my_font_text, command=self.open_toplevel)
-        self.third_frame_1.place(x=900, y=120)
-        self.toplevel_window = None
+    def analizar(self, path):
+        self.config(cursor="watch")
+        ia.indentificarMelasma(path)
+        self.config(cursor="")
+        self.second_large_image_label.destroy()
+        self.resultImg = customtkinter.CTkImage(Image.open("prediction.jpg"), size=(300, 300))
+        self.second_large_image_label = customtkinter.CTkLabel(self.second_frame,text="", image=self.resultImg)
+        self.second_large_image_label.grid(row=1, column=0, padx=20, pady=10)
+        self.select_frame_by_name("frame_2")
 
-        # select default frame
-        self.select_frame_by_name("home")
-        
-    
+    def capturarImagem(self):
+        ia.abrirCamera()
+        self.select_frame_by_name("frame_3")
+        self.img = customtkinter.CTkImage(Image.open("recorte.jpg"), size=(300,400))
+        self.img_1 = customtkinter.CTkLabel(self.third_frame, text="", image=self.img)
+        self.img_1.place(x=700, y=300)
+        self.button = customtkinter.CTkButton(self.third_frame,text="Analizar Imagem", width=200, height=70, font = ("Arial",12), command=self.analizar)
+        self.button.place(x=750, y=750)
 
-    def open_toplevel(self):
-            if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-                self.toplevel_window = ToplevelWindow(self) # create window if its None or destroyed
-                self.toplevel_window.focus()  
-            else:
-                self.toplevel_window.focus()  # if window exists focus it
     def select_frame_by_name(self, name):
         # set button color for selected button
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
@@ -232,9 +241,13 @@ class Inicial(customtkinter.CTk):
         else:
             self.second_frame.grid_forget()
         if name == "frame_3":
-            self.third_frame.grid(row=0, column=1, sticky="nsew")
+            self.third_frame.grid(row=0, column=1, sticky="nsew")  
         else:
             self.third_frame.grid_forget()
+        if name == "frame_4":
+            self.fourth_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.fourth_frame.grid_forget() 
 
     def home_button_event(self):
         self.select_frame_by_name("home")
