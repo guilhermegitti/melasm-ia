@@ -69,7 +69,11 @@ def indentificarMelasma(path):
     #     predictions = predictions['predictions'][0]['confidence']
     #     print("Gerando o resultado da nossa inteligência artificial...")
     #     print(""+str(round(predictions * 100,1))+'%')
+def getPredictions(path):
 
-
-
+    rf = Roboflow(api_key="cJKIb3GNxOiAlmcdZzJv")
+    project = rf.workspace().project("melasma_detection")
+    model = project.version(1).model
+    predictions = model.predict(path, confidence=50, overlap=50).json()
+    return predictions
 
