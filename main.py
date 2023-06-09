@@ -416,13 +416,14 @@ button1 = customtkinter.CTkButton(master=frame, width=220, text="Login", command
 button1.place(x=50, y=240)
 
 
-img2=customtkinter.CTkImage(Image.open("google_logo.webp").resize((20,20), Image.ANTIALIAS))
+img2=customtkinter.CTkImage(Image.open("vitalogo.png").resize((20,20), Image.ANTIALIAS))
 img3=customtkinter.CTkImage(Image.open("facebook_logo.png").resize((20,20), Image.ANTIALIAS))
 button2= customtkinter.CTkButton(master=frame, image=img2, text="VitaDerm", width=100, height=20, compound="left", fg_color='white', text_color='black', hover_color='#AFAFAF')
 button2.place(x=50, y=290)
 
-button3= customtkinter.CTkButton(master=frame, image=img3, text="Marcelinho", width=100, height=20, compound="left", fg_color='white', text_color='black', hover_color='#AFAFAF')
+button3= customtkinter.CTkButton(master=frame, image=img3, text="Facebook", width=100, height=20, compound="left", fg_color='white', text_color='black', hover_color='#AFAFAF')
 button3.place(x=170, y=290)
+
 
 # You can easily integrate authentication system 
 
