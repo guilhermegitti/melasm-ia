@@ -92,24 +92,24 @@ class Inicial(customtkinter.CTk):
         self.home_frame.grid_columnconfigure(0, weight=1)
 
         #Def font 
-        my_font_text = customtkinter.CTkFont(family="Arial", size=12)
+        my_font_text = customtkinter.CTkFont(family="Arial", size=13)
         my_font_title = customtkinter.CTkFont(family="Arial", size=32)
 
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="Bem vindo ao MelasmIA.", font = my_font_title)
-        self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label.place(x=690,y=280)
 
         self.home_frame_large_image_label_text = customtkinter.CTkLabel(self.home_frame, text="Utilizamos de uma IA treinada para te ajudar com o tratamento de um Melasma.", font = my_font_text)
-        self.home_frame_large_image_label_text.grid(row=2, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label_text.place(x=640,y=360)
 
 
-        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Faça já uma detecção", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=lambda: self.select_frame_by_name("frame_3"))
-        self.home_frame_button_2.grid(row=3, column=0, padx=20, pady=10)
+        self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Faça já uma detecção", font = my_font_text, image=self.add_user_image, compound="right", width=700, height=50, command=lambda: self.select_frame_by_name("frame_3"))
+        self.home_frame_button_2.place(x=500,y=400)
 
         self.home_frame_large_image_label_text2 = customtkinter.CTkLabel(self.home_frame, text="Caso já tenha feito sua primeira detecção, veja clicando no botão abaixo.", font = my_font_text)
-        self.home_frame_large_image_label_text2.grid(row=4, column=0, padx=20, pady=10)
+        self.home_frame_large_image_label_text2.place(x=660,y=480)
 
-        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="Vejá seus resultados", font = my_font_text, image=self.image_icon_image, compound="right", width=1000, height=50, command=lambda: self.select_frame_by_name("frame_2"))
-        self.home_frame_button_3.grid(row=5, column=0, padx=20, pady=10)
+        self.home_frame_button_3 = customtkinter.CTkButton(self.home_frame, text="Vejá seus resultados", font = my_font_text, image=self.chart_image, compound="right", width=700, height=50, command=lambda: self.select_frame_by_name("frame_2"))
+        self.home_frame_button_3.place(x=500,y=520)
 
         # create second frame
         self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -399,16 +399,16 @@ l1.pack()
 frame=customtkinter.CTkFrame(master=l1, width=320, height=360, corner_radius=15)
 frame.place(relx=0.5, rely=0.5, anchor=tkinter.CENTER)
 
-l2=customtkinter.CTkLabel(master=frame, text="Log into your Account",font=('Century Gothic',20))
-l2.place(x=50, y=45)
+l2=customtkinter.CTkLabel(master=frame, text="Login",font=('Century Gothic',20))
+l2.place(x=130, y=45)
 
-entry1=customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Username')
+entry1=customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Usuário')
 entry1.place(x=50, y=110)
 
-entry2=customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Password', show="*")
+entry2=customtkinter.CTkEntry(master=frame, width=220, placeholder_text='Senha', show="*")
 entry2.place(x=50, y=165)
 
-l3=customtkinter.CTkLabel(master=frame, text="Forget password?",font=('Century Gothic',12))
+l3=customtkinter.CTkLabel(master=frame, text="Esqueceu a senha?",font=('Century Gothic',12))
 l3.place(x=155,y=195)
 
 #Create custom button
